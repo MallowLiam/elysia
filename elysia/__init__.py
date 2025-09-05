@@ -1,3 +1,18 @@
+"""Lightweight package initializer for Elysia.
+
+This keeps top-level imports minimal to avoid pulling in optional/heavy
+dependencies (e.g., pydantic, dspy) during basic usage like importing
+`elysia.api.*` or `elysia.objects` in test environments without extras.
+
+Downstream code should import submodules directly, e.g.:
+    from elysia.api.agent_manager import AgentManager
+    from elysia.objects import Tool, Result
+
+Power users can still import advanced modules explicitly, e.g.:
+    from elysia.tree.tree import Tree
+    from elysia.config import settings
+"""
+
 from elysia.__metadata__ import (
     __version__,
     __name__,
@@ -7,26 +22,5 @@ from elysia.__metadata__ import (
     __author_email__,
 )
 
-from elysia.tree.tree import Tree
-from elysia.objects import (
-    Tool,
-    Return,
-    Text,
-    Response,
-    Update,
-    Status,
-    Warning,
-    Error,
-    Completed,
-    Result,
-    Retrieval,
-    tool,
-)
-from elysia.preprocessing.collection import (
-    preprocess,
-    preprocessed_collection_exists,
-    edit_preprocessed_collection,
-    delete_preprocessed_collection,
-    view_preprocessed_collection,
-)
-from elysia.config import Settings, settings, configure, smart_setup, set_from_env
+# Intentionally avoid importing heavy submodules at package import time.
+# Import these modules directly where needed instead of re-exporting here.
