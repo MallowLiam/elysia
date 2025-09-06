@@ -313,7 +313,7 @@ Just for fun, these cards, when they are dealt, change the Elysia conversation s
 
 ```python
 import random
-from elysia import Tool
+from elysia.objects import Tool
 from elysia.tools import Ecommerce
 
 class DealCards(Tool):
@@ -414,4 +414,3 @@ Let's break down the different components of this tool.
     - The `llm_message` argument of the Ecommerce `Result`, describes what happens to the LLM whenever this tool is completed. This `llm_message` is persistent through further calls in Elysia, it will remain there for all future events in this conversation. In this case, it re-iterates the point that the cards add custom modifiers, and shows how many cards were dealt to the user at this point.
 
 We could add more features to this card, for example, modifying the `tree_data.environment` object to find any existing cards in the environment (with the name "cards") and overwriting them with the new deal.
-

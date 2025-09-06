@@ -1,5 +1,4 @@
 import pytest
-import elysia
 from elysia.tree.tree import Tree
 from elysia.util.client import ClientManager
 from elysia.preprocessing import preprocess

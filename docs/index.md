@@ -10,7 +10,8 @@ To use Elysia, you need to either set up your models and API keys in your `.env`
 
 Elysia can be used very simply:
 ```python
-from elysia import tool, Tree
+from elysia.objects import tool
+from elysia.tree.tree import Tree
 
 tree = Tree()
 
@@ -23,7 +24,7 @@ tree("What is the sum of 9009 and 6006?")
 
 Elysia is pre-configured to be capable of connecting to and interacting with your [Weaviate](https://weaviate.io/deployment/serverless) clusters!
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree()
 response, objects = tree(
     "What are the 10 most expensive items in the Ecommerce collection?",

@@ -8,7 +8,7 @@ If you haven't followed [the basic guide](basic.md) yet, check that out first be
 
 You can initialise these parameters at the startup of the tree, for example
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree(
     style = "...",
     agent_description = "...",

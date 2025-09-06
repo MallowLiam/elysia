@@ -1,0 +1,51 @@
+name: Lint and Docs Checks
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ruff
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+
+      - name: Ruff Lint
+        run: |
+          ruff --version
+          ruff check .
+
+      - name: Docs import check (no top-level from elysia import)
+        run: |
+          if grep -R -nE "^[[:space:]]*from elysia import\b" docs ; then 
+            echo 'Found banned top-level imports in docs. Use explicit submodules (elysia.objects, elysia.tree.tree, elysia.config, etc.).' ;
+            exit 1 ;
+          else
+            echo 'Docs import check passed.' ;
+          fi
+
+      - name: Code import check (no top-level from elysia import)
+        run: |
+          MATCHES=$(grep -R -nE "^[[:space:]]*from elysia import\b" elysia tests || true)
+          # allow package init/metadata
+          FILTERED=$(echo "$MATCHES" | grep -v "elysia/elysia/__init__.py" | grep -v "elysia/elysia/__metadata__.py" || true)
+          if [ -n "$FILTERED" ]; then
+            echo "Found banned top-level imports in code:"
+            echo "$FILTERED"
+            exit 1
+          else
+            echo 'Code import check passed.'
+          fi
+

@@ -5,7 +5,7 @@ Let's create a tool which performs a least squares regression on numeric data re
 Let's [follow the basic guideline for creating a tool](../Advanced/advanced_tool_construction.md), and create the skeleton of the tool below.
 
 ```python
-from elysia import Error, Tool, Result
+from elysia.objects import Error, Tool, Result
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -436,7 +436,7 @@ class BasicLinearRegression(Tool):
 Let's initialise a tree, add the tool and test it runs correctly. In this example, a Weaviate collection called `Ecommerce` will be used. The `Ecommerce` collection has many redundant fields (for this example), but we want to evaluate whether the `price` variable correlates with the review `rating`.
 
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree()
 tree.add_tool(BasicLinearRegression)
 response, objects = tree(

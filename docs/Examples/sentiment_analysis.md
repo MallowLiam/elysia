@@ -7,7 +7,8 @@ Coming soon.
 Let's add an extra tool to Elysia that analyses the retrieved data and outputs sentiment scores on the objects. This modifies the default Elysia setup, so to start with, let's import Elysia, configure the LLMs and set up a tree with the default initialisation.
 
 ```python
-from elysia import Tree, settings
+from elysia.tree.tree import Tree
+from elysia.config import settings
 settings.default_models()
 tree = Tree(branch_initialisation = "one_branch")
 ```
@@ -21,4 +22,3 @@ In this case, we want to provide a comprehensive
 
 ```
  -->
-

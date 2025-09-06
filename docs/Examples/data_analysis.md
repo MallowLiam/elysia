@@ -56,7 +56,7 @@ with ClientManager().connect_to_client() as client:
 Then this collection requires [preprocessing](../setting_up.md#preprocessing-collections) with Elysia:
 
 ```python
-from elysia import preprocess
+from elysia.preprocessing.collection import preprocess
 preprocess("Diabetes")
 ```
 
@@ -71,7 +71,7 @@ We will follow the [follow the basic guideline for creating a tool](../creating_
 To create a tool in Elysia, you can just write a python function and add the `@tool` decorator.
 
 ```python
-from elysia import tool
+from elysia.objects import tool
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 
@@ -113,7 +113,7 @@ async def fit_linear_regression(env_key, x_var, y_var, collection_name, tree_dat
 Let's initialise a tree, add the tool and test it runs correctly. 
 
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree()
 tree.add_tool(fit_linear_regression)
 response, objects = tree(

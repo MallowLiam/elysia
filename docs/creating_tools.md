@@ -3,7 +3,7 @@
 You can use the custom tool decorator within Elysia to very simply add a tool to the tree. For example:
 
 ```python
-from elysia import tool
+from elysia.objects import tool
 
 @tool
 async def add(x: int, y: int) -> int:
@@ -15,8 +15,8 @@ async def add(x: int, y: int) -> int:
 
 The docstring of the function serves as the tool description, and it's important this is as detailed as possible. This tool can be added to an Elysia `Tree` via
 
-```python 
-from elysia import Tree
+```python
+from elysia.tree.tree import Tree
 tree = Tree()
 tree.add_tool(add)
 ```
@@ -97,7 +97,7 @@ Now the LLM should choose the operation in addition to the numbers. We also exte
 
 If your tool may error, then you can return or yield a custom Elysia `Error` object which will not cause a halt in the execution of the program. Instead, the error message will be logged in the decision tree for which the decision agent can judge whether the error is avoidable on another run of the tool. For example, if our decision agent tries to choose the wrong `operation` in the above `perform_mathematical_operations` tool, we can do something like this:
 ```python
-from elysia import Error
+from elysia.objects import Error
 @tool
 async def perform_mathematical_operations(numbers: list[int | float], operation: str = "sum"):
     """

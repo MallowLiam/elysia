@@ -15,7 +15,7 @@ These Weaviate collections are those which we want to search over using Elysia.
 You need to specify what models you want to use, as well as any API keys. To set up the models, you can use `configure`. For example, if you want to use the GPT-4o family of models:
 
 ```python
-from elysia import configure
+from elysia.config import configure
 configure(
     base_model="gpt-4o-mini",
     base_provider="openai",
@@ -32,7 +32,7 @@ You need to specify both a `base_model` and a `complex_model`, as well as their 
 Then for a collection to be accessible within Elysia, we need to preprocess it - so that the models are aware of the schemas and information about the collection.
 
 ```python
-from elysia import preprocess
+from elysia.preprocessing.collection import preprocess
 preprocess("Tickets")
 ```
  
@@ -41,7 +41,7 @@ preprocess("Tickets")
 To run the Elysia decision tree, using the default setup, just call the `Tree` object!
 
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree()
 response, objects = tree("what were the 10 most recent Github issues?")
 ```

@@ -18,7 +18,7 @@ Elysia uses two language models for different types of tasks;
 To configure different LMs as default for all functions within Elysia, you can use the global [`configure` function](Reference/Settings.md#elysia.config.configure). For example, to use the GPT family of models, you can set:
 
 ```python
-from elysia import configure
+from elysia.config import configure
 
 configure(
     base_model="gpt-4.1-mini",
@@ -31,7 +31,8 @@ configure(
 The `configure` function can be used to specify both the `base_model` and `complex_model`. Both require separately setting a provider; in this case `openai` Instead, you can create your own `Settings` object which can be passed to any of the Elysia functions that use LMs to have a separate settings instance for each initialisation. E.g.,
 
 ```python
-from elysia import Settings, Tree
+from elysia.config import Settings
+from elysia.tree.tree import Tree
 my_settings = Settings()
 tree = Tree(settings=my_settings)
 ```
@@ -54,7 +55,7 @@ Then, the global `settings` object will always use these values, and the `smart_
 First, make sure your Ollama server is running either via the Ollama app or `ollama run <model_name>`. E.g., `ollama run gpt-oss:20b`, which we'll use in this example. Within Python, you can configure your model API base to your Ollama api endpoint (default to `http://localhost:11434`) via the `model_api_base` parameter of `configure`.
 
 ```python 
-from elysia import configure
+from elysia.config import configure
 configure(
     base_provider="ollama",
     complex_provider="ollama",
@@ -83,7 +84,7 @@ which will remove chain of thought prompting for the base and complex model, res
 
 To use Elysia with Weaviate cloud, you need to specify your Weaviate cluster details. These can be set via the Weaviate Cluster URL (`WCD_URL`) and the Weaviate Cluster API Key (`WCD_API_KEY`). To set these values, you can use `configure` on the settings:
 ```python
-from elysia import configure
+from elysia.config import configure
 configure(
     wcd_url=..., # replace with your WCD_URL
     wcd_api_key=... # replace with your WCD_API_KEY
@@ -116,7 +117,7 @@ WCD_API_KEY=
 Or within Python via:
 
 ```python
-from elysia import configure
+from elysia.config import configure
 configure(
     weaviate_is_local=True,
     wcd_url="http://localhost:8080",  # or "localhost"
@@ -141,7 +142,7 @@ Additionally, you need to _preprocess_ your collections for Elysia to use the bu
 [The `preprocess` function](Reference/Preprocessor.md) must be used on the Weaviate collections you plan to use within Elysia. 
 
 ```python
-from elysia import preprocess
+from elysia.preprocessing.collection import preprocess
 preprocess("<your_collection_name>")
 ```
 
@@ -180,14 +181,14 @@ Additionally, you have:
 You can also use [`preprocessed_collection_exists`](Reference/Preprocessor.md#elysia.preprocessing.collection.preprocessed_collection_exists), which returns True/False if the collection has been preprocessed (and it can be accessed within the Weaviate cluster):
 
 ```python
-from elysia import preprocessed_collection_exists
+from elysia.preprocessing.collection import preprocessed_collection_exists
 preprocessed_collection_exists(collection_name = ...)
 ```
 which returns True/False if the preprocess exists within this Weaviate cluster
 
 You can use [`edit_preprocessed_collection`](Reference/Preprocessor.md#elysia.preprocessing.collection.edit_preprocessed_collection) to update the values manually:
 ```python
-from elysia import edit_preprocessed_collection
+from elysia.preprocessing.collection import edit_preprocessed_collection
 properties = edit_preprocessed_collection(
     collection_name = ...,
     named_vectors = ...,

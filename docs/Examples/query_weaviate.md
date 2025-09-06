@@ -20,7 +20,7 @@ Before setting up your environment and connecting to Weaviate, make sure you hav
 Let's use the basic elysia `configure` to both *set up your models* and *connect to your Weaviate instance*.
 
 ```python
-from elysia import configure
+from elysia.config import configure
 configure(
     weaviate_is_local = False, # replace with True if locally running Weaviate
     wcd_url = "...", # replace with your Weaviate REST endpoint URL
@@ -86,7 +86,7 @@ If you want to skip this step and use data from your own collection, simply repl
 
 Now that you are fully set up with models and Weaviate integrations, you can move onto preprocessing your collection for use with Elysia. This is as simple as:
 ```python
-from elysia import preprocess
+from elysia.preprocessing.collection import preprocess
 preprocess("JeopardyQuestion")
 ```
 
@@ -96,7 +96,7 @@ preprocess("JeopardyQuestion")
 To view the preprocessing that has been completed, you can run the `view_preprocessed_collection` function on your collection:
 
 ```python
-from elysia import view_preprocessed_collection
+from elysia.preprocessing.collection import view_preprocessed_collection
 view_preprocessed_collection("JeopardyQuestion")
 ```
 ```json
@@ -227,7 +227,7 @@ Now that the models and Weaviate integrations are set up (with `configure`), the
 
 Let's first create the class and inspect some of the properties.
 ```python
-from elysia import Tree
+from elysia.tree.tree import Tree
 tree = Tree()
 ```
 <details closed>
