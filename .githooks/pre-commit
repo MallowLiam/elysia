@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Local safeguard to remind updating memory-bank on meaningful changes.
+# Bypass with: SKIP_MEMORY_BANK=1 git commit ...  or git commit --no-verify
+
+if [[ "${SKIP_MEMORY_BANK:-}" == "1" ]]; then
+  exit 0
+fi
+
+# Only run inside this repo
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  exit 0
+fi
+
+# What kinds of changes warrant a memory-bank update
+CHANGED=$(git diff --cached --name-only)
+if ! echo "$CHANGED" | grep -Eq '^(docs/|elysia/|README\.md|CONTRIBUTING\.md|pyproject\.toml)'; then
+  exit 0
+fi
+
+MB_DIR="$(cd "$(git rev-parse --show-toplevel)"/.. 2>/dev/null && pwd)/memory-bank"
+if [[ ! -d "$MB_DIR" ]]; then
+  # No memory-bank folder available; do not block
+  exit 0
+fi
+
+# Consider memory-bank updated if any .md file modified recently (last 2 hours)
+if find "$MB_DIR" -maxdepth 1 -name '*.md' -mmin -120 | grep -q . ; then
+  exit 0
+fi
+
+cat <<MSG
+❗ Memory-bank appears not updated in the last ~2 hours.
+
+Detected staged changes touching core/docs. Please update one of:
+  - $MB_DIR/progress.md
+  - $MB_DIR/activeContext.md
+  - $MB_DIR/architect.md
+  - $MB_DIR/decisionLog.md
+  - $MB_DIR/systemPatterns.md
+
+If intentional, bypass with:
+  SKIP_MEMORY_BANK=1 git commit -m "..."
+  # or
+  git commit --no-verify -m "..."
+MSG
+exit 1
+
