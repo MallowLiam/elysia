@@ -34,7 +34,8 @@ To use Elysia, you need to either set up your models and API keys in your `.env`
 
 Elysia can be used very simply:
 ```python
-from elysia import tool, Tree
+from elysia.objects import tool
+from elysia.tree.tree import Tree
 
 tree = Tree()
 
@@ -47,8 +48,8 @@ tree("What is the sum of 9009 and 6006?")
 
 Elysia is pre-configured to be capable of connecting to and interacting with your [Weaviate](https://weaviate.io/deployment/serverless) clusters!
 ```python
-import elysia
-tree = elysia.Tree()
+from elysia.tree.tree import Tree
+tree = Tree()
 response, objects = tree(
     "What are the 10 most expensive items in the Ecommerce collection?",
     collection_names = ["Ecommerce"]
@@ -123,6 +124,19 @@ OPENROUTER_API_KEY=...
 ```
 
 ## FAQ
+
+## Import Guidance
+
+To keep top-level imports lightweight, heavy modules are no longer re-exported from `elysia` at import time. Import directly from submodules:
+
+```python
+from elysia.objects import Tool, Result, tool
+from elysia.tree.tree import Tree
+from elysia.config import Settings, configure
+from elysia.preprocessing.collection import preprocess
+```
+
+Some optional tools depend on extra packages/services. These are safely optionalized; if unavailable, they won’t load, but core tools (e.g., SafeMath, EnvironmentSummary) remain usable.
 
 <details>
 <summary><b>How do I use Elysia with my own data?</b></summary>

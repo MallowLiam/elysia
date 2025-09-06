@@ -117,3 +117,13 @@ The `requires_env` directory of tests require access to a Weaviate cluster as we
 But you should be expected that if your contributions contain changes to the codebase, at least all of the tests in the `no_reqs` directory pass successfully.
 
 Any questions please send an email to me at <danny@weaviate.io>!
+
+## Import Guidelines
+
+- Prefer explicit imports from submodules to keep top-level imports light and avoid pulling optional dependencies by default.
+  - `from elysia.objects import Tool, Result, tool`
+  - `from elysia.tree.tree import Tree`
+  - `from elysia.config import Settings, configure`
+  - `from elysia.preprocessing.collection import preprocess`
+- Do not reintroduce broad `from elysia import ...` imports for heavy objects in new code.
+- Optional tool imports may be wrapped in `try/except` if they rely on extra dependencies; ensure core functionality remains available without them.
