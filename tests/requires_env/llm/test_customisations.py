@@ -2,7 +2,9 @@ import pytest
 from deepeval import evaluate, metrics
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 
-from elysia import Tree, Settings, tool
+from elysia.tree.tree import Tree
+from elysia.config import Settings
+from elysia.objects import tool
 
 
 def test_tree_no_client():

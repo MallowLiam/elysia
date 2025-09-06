@@ -2,7 +2,7 @@ import pytest
 import weaviate
 
 from elysia.util.client import ClientManager
-from elysia import preprocess
+from elysia.preprocessing.collection import preprocess
 
 import weaviate
 from weaviate.util import generate_uuid5
@@ -119,7 +119,7 @@ async def test_local_with_tree():
     create_and_process_collection(client_manager)
 
     # try running a tree with local
-    from elysia import Tree
+    from elysia.tree.tree import Tree
 
     tree = Tree()
 

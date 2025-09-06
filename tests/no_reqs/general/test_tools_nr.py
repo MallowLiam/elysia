@@ -6,7 +6,7 @@ import dspy
 from dspy import LM
 from elysia.objects import Result
 from copy import deepcopy
-from elysia import Tool
+from elysia.objects import Tool
 from elysia.tree.objects import TreeData
 from elysia.objects import Response, tool
 from elysia.config import Settings, configure

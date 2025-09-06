@@ -3,21 +3,27 @@
 Thank you for taking the time to contribute to Elysia!
 
 > And if you like the project, but just don’t have time to contribute, that’s fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
+>
 > - Star the project
 > - Tweet/post on social media about it
 > - Tell your friends about it!
 
 ## Table of Contents
 
-- [Reporting Bugs](#reporting-bugs)
-- [Suggesting Enhancements](#suggesting-enhancements)
-- [Guidelines for Pull Requests](#guidelines-for-pull-requests)
+- [Contributing](#contributing)
+  - [Table of Contents](#table-of-contents)
+  - [Reporting Bugs](#reporting-bugs)
+    - [Before Submitting a Bug Report](#before-submitting-a-bug-report)
+  - [Suggesting Enhancements](#suggesting-enhancements)
+    - [Before Submitting an Enhancement](#before-submitting-an-enhancement)
+  - [Guidelines for Pull Requests](#guidelines-for-pull-requests)
     - [Branch Structure](#branch-structure)
     - [Naming Scheme](#naming-scheme)
+  - [Testing](#testing)
 
 ## Reporting Bugs
 
-**Before Submitting a Bug Report**
+### Before Submitting a Bug Report
 
 A good bug report shouldn’t leave others needing to chase you up for more information. Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report. Please complete the following steps in advance to help us fix any potential bug as fast as possible.
 
@@ -25,18 +31,18 @@ A good bug report shouldn’t leave others needing to chase you up for more info
 - Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read [the documentation](https://weaviate.github.io/elysia/)).
 - To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the bug tracker.
 - Collect information about the bug:
-    - Stack trace (Traceback) if applicable, or terminal output
-    - OS, Platform and Version (Windows, Linux, macOS, x86, ARM)
-    - Python version
-    - Possibly your input and the output
-    - Can you reliably reproduce the issue? And can you also reproduce it with older versions?
+  - Stack trace (Traceback) if applicable, or terminal output
+  - OS, Platform and Version (Windows, Linux, macOS, x86, ARM)
+  - Python version
+  - Possibly your input and the output
+  - Can you reliably reproduce the issue? And can you also reproduce it with older versions?
 - For Elysia specifically, which revolves around using LLMs for tasks. Make sure that your issue is not an 'LLM issue' - is it an LLM making a mistake, calling the wrong tool? Does the problem persist when trying different LLMs? Can you try with larger LLMs that are less likely to make mistakes?
 
 ## Suggesting Enhancements
 
 Enhancement suggestions are tracked as GitHub issues.
 
-**Before Submitting an Enhancement**
+### Before Submitting an Enhancement
 
 - Make sure that you are using the latest version.
 - Read the documentation carefully and find out if the functionality is already covered, maybe by an individual configuration.
@@ -49,7 +55,7 @@ For your suggestion:
 - Provide a step-by-step description of the suggested enhancement in as many details as possible.
 - Describe the current behavior and explain which behavior you expected to see instead and why. At this point you can also tell which alternatives do not work for you.
 - You may want to include screenshots or screen recordings which help you demonstrate the steps or point out the part which the suggestion is related to.
-- Explain why this enhancement would be useful to most Elysia users. 
+- Explain why this enhancement would be useful to most Elysia users.
 
 ## Guidelines for Pull Requests
 
@@ -60,7 +66,6 @@ Elysia uses [black](https://github.com/psf/black) for formatting Python code.
 The `main` and `dev` branches will be used in active development of Elysia and will be contributing towards the next release. Pull requests that involve new features should be made to the `main` branch. Smaller improvements such as bugfixes should be made to a current release branch, prefixed with `release/`
 
 When a new version of Elysia is released, the release tag will be created from `main` and a new branch called `release/vY.Z.x` will be created for bug fixes or chores. The `release/vY.Z.x` branch serves as the snapshot of the earlier version for fixes.
-
 
 > **Example**
 >
@@ -91,10 +96,13 @@ Examples:
 ## Testing
 
 To run the tests, you need to install the dev extra of Elysia, via
+
 ```bash
 pip install "elysia-ai[dev]"
 ```
+
 or from the source
+
 ```bash
 pip install ".[dev]"
 ```
@@ -108,4 +116,4 @@ The `requires_env` directory of tests require access to a Weaviate cluster as we
 
 But you should be expected that if your contributions contain changes to the codebase, at least all of the tests in the `no_reqs` directory pass successfully.
 
-Any questions please send an email to me at danny@weaviate.io!
+Any questions please send an email to me at <danny@weaviate.io>!

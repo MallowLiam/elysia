@@ -1,6 +1,7 @@
 # self-healing errors can be tested by making a custom tool that returns an error only on thef irst
 # and then returns a result on the second call
-from elysia import Tree, Tool, Error
+from elysia.tree.tree import Tree
+from elysia.objects import Tool, Error
 from elysia.tree.objects import TreeData
 from elysia.util.client import ClientManager
 import dspy

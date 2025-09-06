@@ -1,0 +1,30 @@
+{
+  "name": "general_assistant",
+  "description": "A versatile general-purpose assistant",
+  "version": "1.0",
+  "base_config": {
+    "tools": [
+      "SafeMath",
+      "EnvironmentSummary"
+    ],
+    "system_prompt": "You are a helpful general-purpose assistant.",
+    "description": "Versatile assistant for various tasks"
+  },
+  "customization_points": {
+    "personality": {
+      "type": "choice",
+      "options": [
+        "professional",
+        "friendly",
+        "concise",
+        "detailed"
+      ],
+      "default": "professional"
+    },
+    "expertise_areas": {
+      "type": "text",
+      "default": "general assistance"
+    }
+  },
+  "created_at": "2025-09-06T12:00:00Z"
+}

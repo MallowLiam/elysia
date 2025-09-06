@@ -10,9 +10,9 @@ from copy import deepcopy
 from deepeval import evaluate, metrics
 from deepeval.test_case import LLMTestCase, ToolCall
 
-from elysia import Tree
+from elysia.tree.tree import Tree
 from elysia.util.client import ClientManager
-from elysia import configure
+from elysia.config import configure
 
 configure(logging_level="DEBUG")
 

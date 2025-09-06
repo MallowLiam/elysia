@@ -1,5 +1,5 @@
 import elysia.api.custom_tools as custom_tools
-from elysia import Tool
+from elysia.objects import Tool
 from typing import Dict, Type
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse

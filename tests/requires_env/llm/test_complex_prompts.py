@@ -9,9 +9,11 @@ from copy import deepcopy
 from deepeval import evaluate, metrics
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams, ToolCall
 
-from elysia import Tree, Settings
+from elysia.tree.tree import Tree
+from elysia.config import Settings
 from elysia.util.client import ClientManager
-from elysia import configure, preprocess
+from elysia.config import configure
+from elysia.preprocessing.collection import preprocess
 from elysia.preprocessing.collection import preprocessed_collection_exists
 
 configure(logging_level="DEBUG")

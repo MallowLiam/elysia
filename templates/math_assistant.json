@@ -1,0 +1,29 @@
+{
+  "name": "math_assistant",
+  "description": "A specialized agent for mathematical operations",
+  "version": "1.0",
+  "base_config": {
+    "tools": [
+      "SafeMath"
+    ],
+    "system_prompt": "You are a helpful math assistant.",
+    "description": "Mathematical assistant with calculation capabilities"
+  },
+  "customization_points": {
+    "specialty": {
+      "type": "choice",
+      "options": [
+        "algebra",
+        "calculus",
+        "statistics",
+        "general"
+      ],
+      "default": "general"
+    },
+    "precision": {
+      "type": "number",
+      "default": 2
+    }
+  },
+  "created_at": "2025-09-06T12:00:00Z"
+}

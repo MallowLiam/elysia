@@ -1,0 +1,35 @@
+{
+  "name": "data_analyst",
+  "description": "An agent for data analysis and insights",
+  "version": "1.0",
+  "base_config": {
+    "tools": [
+      "SafeMath",
+      "EnvironmentSummary"
+    ],
+    "system_prompt": "You are a data analysis expert.",
+    "description": "Data analyst with statistical and analytical capabilities"
+  },
+  "customization_points": {
+    "focus_area": {
+      "type": "choice",
+      "options": [
+        "business",
+        "scientific",
+        "financial",
+        "general"
+      ],
+      "default": "general"
+    },
+    "analysis_depth": {
+      "type": "choice",
+      "options": [
+        "basic",
+        "detailed",
+        "comprehensive"
+      ],
+      "default": "detailed"
+    }
+  },
+  "created_at": "2025-09-06T12:00:00Z"
+}
