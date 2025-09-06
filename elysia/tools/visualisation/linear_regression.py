@@ -1,4 +1,4 @@
-from elysia import Error, Tool, Result
+from elysia.objects import Error, Tool, Result
 import numpy as np
 import matplotlib.pyplot as plt
 from elysia.tools.visualisation.objects import (
@@ -6,7 +6,6 @@ from elysia.tools.visualisation.objects import (
     ScatterOrLineDataPoints,
     ScatterOrLineDataPoint,
     ScatterOrLineYAxisData,
-    ScatterOrLineChart,
     ChartResult,
 )
 

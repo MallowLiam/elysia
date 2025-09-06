@@ -5,7 +5,7 @@ import os
 
 def test_create_tools_simple():
 
-    from elysia import tool
+    from elysia.objects import tool
 
     @tool
     async def add1(x: int, y: int) -> int:
@@ -14,7 +14,7 @@ def test_create_tools_simple():
         """
         return x + y
 
-    from elysia import Tree
+    from elysia.tree.tree import Tree
 
     tree = Tree()
     tree.add_tool(add1)
@@ -57,7 +57,7 @@ def test_create_tools_simple():
     assert result["objects"][0]["difference"] == 1123 - 48332
 
     from math import prod
-    from elysia import Error
+    from elysia.objects import Error
 
     @tool
     async def perform_mathematical_operations(
@@ -125,15 +125,15 @@ def test_query_weaviate():
             else:
                 print("Insert complete.")
 
-        from elysia import preprocess
+        from elysia.preprocessing import preprocess
 
         preprocess("JeopardyQuestion", force=True)
 
-        from elysia import view_preprocessed_collection
+        from elysia.preprocessing import view_preprocessed_collection
 
         print(view_preprocessed_collection("JeopardyQuestion"))
 
-        from elysia import Tree
+        from elysia.tree.tree import Tree
 
         tree = Tree()
 
@@ -157,7 +157,7 @@ def test_query_weaviate():
             if client.collections.exists("JeopardyQuestion"):
                 client.collections.delete("JeopardyQuestion")
 
-            from elysia import delete_preprocessed_collection
+            from elysia.preprocessing import delete_preprocessed_collection
 
             delete_preprocessed_collection("JeopardyQuestion", client_manager)
 
@@ -173,7 +173,7 @@ def test_data_analysis():
         )
 
     # Box 1: Configure Elysia
-    from elysia import configure
+    from elysia.config import configure
 
     configure(
         base_model="gemini-2.0-flash-001",  # replace models and providers with which ever LM you want to use
@@ -210,12 +210,12 @@ def test_data_analysis():
                 batch.add_object({"predictor": X[i, 0], "target": Y[i]})
 
     # Box 4: Preprocess
-    from elysia import preprocess
+    from elysia.preprocessing import preprocess
 
     preprocess("ELYSIA_Test_Diabetes")
 
     # Box 5: Create Tool
-    from elysia import tool
+    from elysia.objects import tool
     from sklearn.linear_model import LinearRegression
     import matplotlib.pyplot as plt
 
@@ -247,7 +247,7 @@ def test_data_analysis():
         }
 
     # Box 6: Run
-    from elysia import Tree
+    from elysia.tree.tree import Tree
 
     tree = Tree()
     tree.add_tool(fit_linear_regression)

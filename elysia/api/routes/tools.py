@@ -91,12 +91,20 @@ async def add_tool_to_tree(
         tree_manager: TreeManager = user["tree_manager"]
 
         # get tree and add tool
+        tree = None
         for conversation_id in tree_manager.trees:
-            tree: Tree = tree_manager.get_tree(conversation_id)
+            tree = tree_manager.get_tree(conversation_id)
             tree.add_tool(tool_class, data.branch_id, from_tool_ids=data.from_tool_ids)
 
-        # all trees should look the same, so return the most recent one
-        return JSONResponse(content={"tree": tree.tree, "error": ""}, status_code=200)
+        if tree is not None:
+            # all trees should look the same, so return the most recent one
+            return JSONResponse(
+                content={"tree": tree.tree, "error": ""}, status_code=200
+            )
+        else:
+            return JSONResponse(
+                content={"tree": {}, "error": "No trees found"}, status_code=404
+            )
 
     except Exception as e:
         logger.error(f"Error adding tool to tree: {str(e)}")
@@ -116,15 +124,23 @@ async def remove_tool_from_tree(
         # get tree and remove tool
         user = await user_manager.get_user_local(user_id)
         tree_manager: TreeManager = user["tree_manager"]
+        tree = None
         for conversation_id in tree_manager.trees:
-            tree: Tree = tree_manager.get_tree(conversation_id)
+            tree = tree_manager.get_tree(conversation_id)
             tree.remove_tool(
                 tool_class.get_metadata()["name"],  # type: ignore
                 data.branch_id,
                 from_tool_ids=data.from_tool_ids,
             )
 
-        return JSONResponse(content={"tree": tree.tree, "error": ""}, status_code=200)
+        if tree is not None:
+            return JSONResponse(
+                content={"tree": tree.tree, "error": ""}, status_code=200
+            )
+        else:
+            return JSONResponse(
+                content={"tree": {}, "error": "No trees found"}, status_code=404
+            )
     except Exception as e:
         logger.error(f"Error removing tool from tree: {str(e)}")
         return JSONResponse(content={"tree": {}, "error": str(e)}, status_code=500)
@@ -140,8 +156,9 @@ async def add_branch_to_tree(
         # get tree and add branch
         user = await user_manager.get_user_local(user_id)
         tree_manager: TreeManager = user["tree_manager"]
+        tree = None
         for conversation_id in tree_manager.trees:
-            tree: Tree = tree_manager.get_tree(conversation_id)
+            tree = tree_manager.get_tree(conversation_id)
             tree.add_branch(
                 branch_id=data.id,
                 instruction=data.instruction,
@@ -152,7 +169,14 @@ async def add_branch_to_tree(
                 status=data.status,
             )
 
-        return JSONResponse(content={"tree": tree.tree, "error": ""}, status_code=200)
+        if tree is not None:
+            return JSONResponse(
+                content={"tree": tree.tree, "error": ""}, status_code=200
+            )
+        else:
+            return JSONResponse(
+                content={"tree": {}, "error": "No trees found"}, status_code=404
+            )
     except Exception as e:
         logger.error(f"Error adding branch to tree: {str(e)}")
         return JSONResponse(content={"tree": {}, "error": str(e)}, status_code=500)
@@ -168,11 +192,19 @@ async def remove_branch_from_tree(
         # get tree and remove branch
         user = await user_manager.get_user_local(user_id)
         tree_manager: TreeManager = user["tree_manager"]
+        tree = None
         for conversation_id in tree_manager.trees:
-            tree: Tree = tree_manager.get_tree(conversation_id)
+            tree = tree_manager.get_tree(conversation_id)
             tree.remove_branch(data.id)
 
-        return JSONResponse(content={"tree": tree.tree, "error": ""}, status_code=200)
+        if tree is not None:
+            return JSONResponse(
+                content={"tree": tree.tree, "error": ""}, status_code=200
+            )
+        else:
+            return JSONResponse(
+                content={"tree": {}, "error": "No trees found"}, status_code=404
+            )
     except Exception as e:
         logger.error(f"Error removing branch from tree: {str(e)}")
         return JSONResponse(content={"tree": {}, "error": str(e)}, status_code=500)

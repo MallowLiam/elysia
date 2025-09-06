@@ -9,6 +9,23 @@ from elysia.api.templates import TemplateManager, create_default_templates
 from elysia.api.multi_agent import MultiAgentOrchestrator, Message
 from elysia.api.monitoring import MonitoringDashboard
 from elysia.api.agent_executor import AgentExecutor, ExecutionContext
+            calls = [call.args[0] for call in mock_print.call_args_list]
+            assert "No agents found." not in callslist_agents_empty(self):
+        """Test listing agents when none exist."""
+        with patch('builtins.print') as mock_print:
+            self.cli.list_agents(Mock())
+            # CLI creates default agents during initialization, so we expect at least one agent
+            assert mock_print.called
+            # Check that it doesn't print "No agents found"
+            calls = [call.args[0] for call in mock_print.call_args_list]
+            assert "No agents found." not in callshutil
+from unittest.mock import Mock, patch
+from datetime import datetime
+from elysia.api.agent_manager import AgentManager
+from elysia.api.templates import TemplateManager, create_default_templates
+from elysia.api.multi_agent import MultiAgentOrchestrator, Message
+from elysia.api.monitoring import MonitoringDashboard
+from elysia.api.agent_executor import AgentExecutor, ExecutionContext
 
 
 class TestAgentCLI:
@@ -40,52 +57,7 @@ class TestAgentCLI:
 
     def test_list_agents_with_defaults(self):
         """Test listing agents (CLI creates default agents during initialization)."""
-        with patch("builtins.print") as mock_print:
-            self.cli.list_agents(Mock())
-            # CLI creates default agents during initialization, so we expect at least one agent
-            assert mock_print.called
-            # Check that it doesn't print "No agents found"
-            calls = [call.args[0] for call in mock_print.call_args_list]
-            assert "No agents found." not in calls
-
-    def test_list_templates(self):
-        """Test listing templates."""
-        with patch("builtins.print") as mock_print:
-            self.cli.list_templates(Mock())
-            # Should print templates (may be empty or have defaults)
-            assert mock_print.called
-
-
-class TestTemplateManager:  # pyright: ignore[reportRedeclaration]
-    """Test cases for AgentCLI."""
-
-    def setup_method(self):
-        from elysia.cli import AgentCLI
-
-        self.cli = AgentCLI()
-
-    def test_cli_initialization(self):
-        """Test CLI initializes with all components."""
-        assert self.cli.agent_manager is not None
-        assert self.cli.template_manager is not None
-        assert self.cli.agent_executor is not None
-        assert self.cli.monitoring is not None
-
-    def test_confirm_action_yes(self):
-        """Test confirmation with yes response."""
-        with patch("builtins.input", return_value="y"):
-            result = self.cli.confirm_action("Test message")
-            assert result is True
-
-    def test_confirm_action_no(self):
-        """Test confirmation with no response."""
-        with patch("builtins.input", return_value="n"):
-            result = self.cli.confirm_action("Test message")
-            assert result is False
-
-    def test_list_agents_with_defaults(self):
-        """Test listing agents (CLI creates default agents during initialization)."""
-        with patch("builtins.print") as mock_print:
+        with patch('builtins.print') as mock_print:
             self.cli.list_agents(Mock())
             # CLI creates default agents during initialization, so we expect at least one agent
             assert mock_print.called

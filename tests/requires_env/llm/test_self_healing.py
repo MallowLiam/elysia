@@ -7,7 +7,7 @@ from elysia.util.client import ClientManager
 import dspy
 
 
-class TestSelfHealing(Tool):
+class SelfHealingTool(Tool):
 
     def __init__(self, **kwargs):
         super().__init__(
@@ -36,7 +36,7 @@ class TestSelfHealing(Tool):
 
 def test_self_healing():
     tree = Tree()
-    tree.add_tool(TestSelfHealing)
+    tree.add_tool(SelfHealingTool)
 
     tree("Call the self-healing tool")
     assert "error" in tree.tree_data.tasks_completed[0]["task"][0]

@@ -316,7 +316,7 @@ async def run_tree(
 @pytest.mark.asyncio
 async def test_run_if_true_false_tool():
 
-    tree = await run_tree("Hello", [], [RunIfTrueFalseTool])
+    tree = await run_tree("Hello", [], [RunIfTrueFalseTool()])
 
     assert "rule_tool" not in tree.tree_data.environment.environment
 
@@ -324,7 +324,7 @@ async def test_run_if_true_false_tool():
 @pytest.mark.asyncio
 async def test_run_if_true_true_tool():
 
-    tree = await run_tree("Hello", [], [RunIfTrueTrueTool])
+    tree = await run_tree("Hello", [], [RunIfTrueTrueTool()])
 
     assert "rule_tool" in tree.tree_data.environment.environment
 
@@ -334,8 +334,7 @@ async def test_run_if_true_true_with_default_inputs_tool():
     tree = await run_tree(
         "Hello",
         [],
-        [RunIfTrueTrueWithInputsTool],
-        use_default_inputs=True,
+        [RunIfTrueTrueWithInputsTool(use_default_inputs=True)],
     )
 
     assert "rule_tool" in tree.tree_data.environment.environment
@@ -352,8 +351,7 @@ async def test_run_if_true_true_with_non_default_inputs_tool():
     tree = await run_tree(
         "Hello",
         [],
-        [RunIfTrueTrueWithInputsTool],
-        use_default_inputs=False,
+        [RunIfTrueTrueWithInputsTool(use_default_inputs=False)],
     )
 
     assert "rule_tool" in tree.tree_data.environment.environment
@@ -369,13 +367,13 @@ async def test_run_if_true_true_with_non_default_inputs_tool():
 async def test_tool_not_available():
 
     with pytest.raises(ValueError):  # should have no tools available
-        await run_tree("Hello", [], [ToolNotAvailable], remove_tools=True)
+        await run_tree("Hello", [], [ToolNotAvailable()], remove_tools=True)
 
 
 @pytest.mark.asyncio
 async def test_tool_available():
 
-    tree = await run_tree("Hello", [], [ToolAvailable], remove_tools=True)
+    tree = await run_tree("Hello", [], [ToolAvailable()], remove_tools=True)
     all_decision_history = []
     for iteration in tree.decision_history:
         all_decision_history.extend(iteration)

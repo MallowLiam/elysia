@@ -1,0 +1,18 @@
+{
+  "math_agent": {
+    "name": "math_agent",
+    "description": "Mathematical assistant with calculation capabilities",
+    "tools": [],
+    "system_prompt": "You are a helpful math assistant.",
+    "config": {
+      "specialty": "algebra"
+    }
+  },
+  "templated_agent": {
+    "name": "templated_agent",
+    "description": "Mathematical assistant with calculation capabilities",
+    "tools": [],
+    "system_prompt": "You are a helpful math assistant.",
+    "config": {}
+  }
+}
