@@ -63,7 +63,7 @@ class TellAJoke(Tool):
 # ---------------------------------------------------------------------------
 
 from elysia.objects import Result, Status, Error
-from typing import Any
+from typing import Any, Union
 
 
 class SafeMath(Tool):
@@ -91,7 +91,7 @@ class SafeMath(Tool):
                     "required": True,
                 },
                 "numbers": {
-                    "type": list,
+                    "type": Union[list, str],
                     "description": "Numbers as list OR comma / space separated string",
                     "required": True,
                 },
@@ -103,6 +103,7 @@ class SafeMath(Tool):
         self, tree_data, inputs, base_lm, complex_lm, client_manager, **kwargs
     ):
         raw_numbers = inputs["numbers"]
+        numbers = []
         if isinstance(raw_numbers, str):
             # split by comma or whitespace
             parts = (
@@ -110,22 +111,24 @@ class SafeMath(Tool):
                 if "," in raw_numbers
                 else raw_numbers.split()
             )
-            try:
-                numbers = [float(p) for p in parts if p != ""]
-            except ValueError:
-                yield Error("One or more provided numbers are invalid.")
-                return
+            for p in parts:
+                try:
+                    numbers.append(float(p))
+                except ValueError:
+                    yield Error(f"Invalid number: '{p}' is not a valid float.")
+                    return
         elif isinstance(raw_numbers, list):
-            try:
-                numbers = [float(p) for p in raw_numbers]
-            except Exception:
-                yield Error("List contains non-numeric values.")
-                return
+            for p in raw_numbers:
+                try:
+                    numbers.append(float(p))
+                except Exception:
+                    yield Error(f"Invalid list element: '{p}' is not a valid float.")
+                    return
         else:
             yield Error("Unsupported numbers input format.")
             return
 
-        if len(numbers) == 0:
+        if not numbers:
             yield Error("No numbers provided.")
             return
 
@@ -288,3 +291,124 @@ class HiddenStoreConditionalTool(Tool):
 
 # Registering these tools is automatic: they are discovered by the API via
 # `find_tool_classes()` scanning this module for subclasses of `Tool`.
+
+
+class QdrantSearch(Tool):
+    """Search a Qdrant collection with a provided query vector.
+
+    Inputs:
+    - collection: Name of the Qdrant collection
+    - query_vector: List of floats OR a comma/space separated string
+    - limit: Max number of results to return (default 10)
+
+    This tool is only available when `VECTOR_DB_TYPE=qdrant` is set.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(
+            name="qdrant_search",
+            description=(
+                "Search a Qdrant collection using a numeric query vector. "
+                "Inputs: collection (str), query_vector (list[str|float] or comma/space separated str), limit (int)."
+            ),
+            inputs={
+                "collection": {
+                    "type": str,
+                    "description": "Qdrant collection name",
+                    "required": True,
+                },
+                "query_vector": {
+                    "type": list,
+                    "description": "Query vector as list OR comma / space separated string",
+                    "required": True,
+                },
+                "limit": {
+                    "type": int,
+                    "description": "Number of results to return",
+                    "default": 10,
+                    "required": False,
+                },
+            },
+            end=False,
+        )
+
+    async def is_tool_available(self, tree_data, base_lm, complex_lm, client_manager):
+        import os
+
+        return os.getenv("VECTOR_DB_TYPE", "").lower() == "qdrant"
+
+    async def __call__(
+        self,
+        tree_data,
+        inputs,
+        base_lm,
+        complex_lm,
+        client_manager,
+        **kwargs,
+    ):
+        from elysia.objects import Result, Status, Error
+
+        # Parse inputs
+        collection = inputs["collection"]
+        raw_vec = inputs["query_vector"]
+        limit = int(inputs.get("limit", 10) or 10)
+
+        # Coerce vector
+        try:
+            if isinstance(raw_vec, str):
+                parts = (
+                    [p.strip() for chunk in raw_vec.split(",") for p in chunk.split()]
+                    if "," in raw_vec
+                    else raw_vec.split()
+                )
+                query_vector = [float(p) for p in parts if p != ""]
+            elif isinstance(raw_vec, list):
+                query_vector = [float(x) for x in raw_vec]
+            else:
+                yield Error("Unsupported query_vector input format.")
+                return
+        except Exception:
+            yield Error("Query vector contains non-numeric values.")
+            return
+
+        if not query_vector:
+            yield Error("Query vector is empty.")
+            return
+
+        # Load vector DB from env
+        try:
+            from elysia.api.vector_db import get_vector_db_from_env
+
+            db = get_vector_db_from_env()
+        except Exception as e:
+            yield Error(f"Failed to initialize Qdrant client: {e}")
+            return
+
+        yield Status(
+            f"Searching Qdrant collection '{collection}' with {len(query_vector)}-dim vector."
+        )
+
+        try:
+            results = db.search_vectors(collection, query_vector, limit=limit)
+        except Exception as e:
+            yield Error(f"Qdrant search failed: {e}")
+            return
+
+        # Normalize minimal result shape
+        normalized = [
+            {
+                "id": r.get("id"),
+                "score": r.get("score"),
+                "payload": r.get("payload", {}),
+            }
+            for r in results
+        ]
+
+        yield Result(
+            objects=normalized,
+            metadata={"collection": collection, "count": len(normalized)},
+            name="qdrant_search_results",
+            llm_message=(
+                "Retrieved {count} nearest vectors from '{collection}' using Qdrant backend."
+            ),
+        )
