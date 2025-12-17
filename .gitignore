@@ -172,3 +172,4 @@ Thumbs.db
 elysia/api/user_configs/
 elysia/api/static/saved_trees/
 test_templates/
+/bin/
